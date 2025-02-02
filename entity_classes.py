@@ -560,6 +560,7 @@ class Player(AnimatedSprite):
     def shoot(self):
         if self.amo > 0:
             self.amo -= 1
+            self.game.shots_made += 1
             mouse_pos = pygame.mouse.get_pos()
             direction = pygame.Vector2(mouse_pos) - self.game.player.position
             if direction.length() > 0:
@@ -573,6 +574,7 @@ class Player(AnimatedSprite):
             self.play_animation(self.damaged_frames, 100, False)
 
             if self.health <= 0:
+                self.game.deaths += 1
                 self.in_battle = False
                 self.is_dying = True
                 self.play_animation(self.death_frames, 400, False)
@@ -648,7 +650,6 @@ class NPS(AnimatedSprite):
         self.game.texts.append((text, (15, 15)))
         if pygame.key.get_pressed()[pygame.K_e]:
             if self.ismain:
-                print('завершаю уровень нпс')
                 self.game.switch_to_next_level = True
             self.is_dialogue = False
             self.available_for_dialogue = False

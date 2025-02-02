@@ -173,7 +173,7 @@ battle2 = {'type': 'battle', 'player': {'position': (200, 350), 'amo': 45},
            'enemies': [{'position': (100, 100)}, {'position': (500, -50)}, {'position': (-50, 450)}],
            'archers': [{'position': (650, 450)}, {'position': (800, 100)}]}
 
-battle1 = {'type': 'battle', 'player': {'position': (200, 620), 'amo': 30},
+battle1 = {'type': 'battle', 'player': {'position': (800, 600), 'amo': 30},
            'obstacles': [{'points': [(300, 200), (300, 400), (400, 400), (400, 200), (400, 300), (600, 300), (600, 200),
                                      (600, 400), (700, 400), (700, 200)], 'texture': 'floor_tile.png'},
                          {'points': [(100, 500), (100, 600), (300, 600), (300, 500)], 'texture': 'floor_tile.png'}],

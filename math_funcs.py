@@ -10,6 +10,12 @@ def euclidean_distance(p1, p2):
     return math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2)
 
 
+def seconds_to_mm_ss(seconds):
+    minutes = int(seconds // 60)
+    sec = int(seconds % 60)
+    return f"{minutes:02}:{sec:02}"
+
+
 def obstacle_intersect_by_line(x1, y1, x2, y2, points, graph_points):
     intersect_points = []
     ret_points = []

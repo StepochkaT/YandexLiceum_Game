@@ -1,7 +1,7 @@
 import random
 from itertools import combinations
 
-from math_funcs import obstacle_intersect_by_line, euclidean_distance, load_sound
+from math_funcs import obstacle_intersect_by_line, euclidean_distance, load_sound, seconds_to_mm_ss
 from entity_classes import Object, Enemy, Archer, Player, NPS, Camera, AmmoDisplay, HealthBar
 
 import pygame
@@ -61,6 +61,10 @@ class Game:
         self.knife_sound.set_volume(0.9)
         self.dead_sound = self.mixer.Sound(load_sound('dead.mp3'))
         self.knife_sound.set_volume(0.9)
+
+        self.deaths = 0
+        self.shots_made = 0
+        self.pass_time = None
 
     def load_level(self, level_data):
         pygame.mixer.music.stop()
@@ -150,9 +154,15 @@ class Game:
 
     def show_text(self, text, duration, font_size=40):
         font = pygame.font.SysFont(None, font_size)
-        text_surface = font.render(text, True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(self.width // 2, self.height // 2))
-        self.screen.blit(text_surface, text_rect)
+        lines = text.split("\n")
+        y_offset = self.height // 2 - (len(lines) * font_size) // 2
+
+        for line in lines:
+            text_surface = font.render(line, True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=(self.width // 2, y_offset))
+            self.screen.blit(text_surface, text_rect)
+            y_offset += font_size + 5
+
         pygame.display.flip()
         pygame.time.delay(duration)
 
@@ -249,8 +259,15 @@ class Game:
                                     font_size=40,
                                     shake_intensity=2, duration=5000, shake_frequency=25)
             else:
-                self.show_text('Уровень пройден', 3000, 40)
+                self.show_text(
+                    f'Уровень пройден\nВремя прохождения:{seconds_to_mm_ss((pygame.time.get_ticks() - self.pass_time) / 1000)}'
+                    f'\nСмертей: {self.deaths}\nВыстрелов сделано: {self.shots_made}',
+                    3000, 40)
+
             self.current_level_index += 1
+            self.deaths = 0
+            self.shots_made = 0
+            self.pass_time = pygame.time.get_ticks()
             self.level_complete = True
             self.level_complete_time = pygame.time.get_ticks()
             self.switch_to_next_level = False
